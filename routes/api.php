@@ -31,7 +31,8 @@ Route::get('/users', [UserController::class, 'getUsers']);
 Route::get('/user/{id}',[UserController::class,'getUser']);
 
 Route::post('/posts', [PostController::class, 'create']);
-
+Route::get('/posts',[PostController::class,'getPosts']);
+Route::delete('/posts/{postId}',[PostController::class,'deletePost']);
 
 Route::post('/comments', [CommentController::class, 'create']);
 Route::get('posts/{postId}/comments', [CommentController::class, 'getPostComments']);
