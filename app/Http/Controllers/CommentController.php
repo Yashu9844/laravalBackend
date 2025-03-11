@@ -15,13 +15,13 @@ class CommentController extends Controller
      */
     public function create(Request $request)
     {
-        // Validate incoming request data
+
         $request->validate([
             'content' => 'required|string',
         ]);
 
         try {
-            // Create new comment
+
             $comment = Comment::create([
                 'content' => $request->content,
             ]);
@@ -121,32 +121,32 @@ class CommentController extends Controller
 public function getComments(Request $request)
 {
     try {
-        // Get query parameters or set defaults
+   
         $startIndex = $request->query('startIndex', 0);
         $limit = $request->query('limit', 9);
         $sortDirection = $request->query('sort', 'asc') === 'desc' ? 'desc' : 'asc';
 
-        // Fetch comments with pagination and sorting
+ 
         $comments = Comment::orderBy('created_at', $sortDirection)
             ->skip($startIndex)
             ->take($limit)
             ->get();
 
-        // Get total number of comments
+    
         $totalComments = Comment::count();
 
-        // Get comments from last month
+      
         $oneMonthAgo = now()->subMonth();
         $lastMonthComments = Comment::where('created_at', '>=', $oneMonthAgo)->count();
 
-        // Return the response
+        
         return response()->json([
             'comments' => $comments,
             'totalComments' => $totalComments,
             'lastMonthComments' => $lastMonthComments,
         ], 200);
     } catch (\Exception $e) {
-        // Handle error
+ 
         return response()->json([
             'message' => 'Something went wrong',
             'error' => $e->getMessage()

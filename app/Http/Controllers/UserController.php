@@ -97,15 +97,14 @@ return response()->json(['message'=>'User has deleted'],200);
             ->take($limit)
             ->get();
     
-        // Remove password field before sending response
+
         $usersWithoutPassword = $users->map(function ($user) {
             return collect($user)->except(['password']);
         });
-    
-        // Get total user count
+
         $totalUsers = User::count();
     
-        // Calculate last month's users
+
         $oneMonthAgo = now()->subMonth();
         $lastMonthUsers = User::where('created_at', '>=', $oneMonthAgo)->count();
     
