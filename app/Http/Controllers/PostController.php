@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Illuminate\Http\Response;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -111,5 +113,32 @@ class PostController extends Controller {
             'error' => $th->getMessage()
         ], 500);
     }
+ }
+
+
+ public function updatePost(Request $request, $postId)
+ {
+     try {
+         $post = Post::find($postId);
+
+         if (!$post) {
+             return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
+         }
+
+         // Validate request
+         $request->validate([
+             'title' => 'sometimes|string|unique:posts,title,' . $postId,
+             'content' => 'sometimes|string',
+             'category' => 'sometimes|string',
+             'image' => 'sometimes|string',
+         ]);
+
+         // Update fields if provided
+         $post->update($request->only(['title', 'content', 'category', 'image']));
+
+         return response()->json($post, Response::HTTP_OK);
+     } catch (\Exception $e) {
+         return response()->json(['error' => 'Something went wrong', 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+     }
  }
 }
