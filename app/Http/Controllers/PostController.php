@@ -35,4 +35,8 @@ class PostController extends Controller {
             return response()->json(['message' => 'Something went wrong', 'error' => $e->getMessage()], 500);
         }
     }
+
+
+
+    
 }

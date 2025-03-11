@@ -31,6 +31,8 @@ Route::get('/users', [UserController::class, 'getUsers']);
 Route::get('/user/{id}',[UserController::class,'getUser']);
 
 Route::post('/posts', [PostController::class, 'create']);
+
+
 Route::post('/comments', [CommentController::class, 'create']);
 Route::get('posts/{postId}/comments', [CommentController::class, 'getPostComments']);
 Route::put('/comments/{commentId}/like', [CommentController::class, 'likeComment']);
